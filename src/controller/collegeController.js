@@ -6,7 +6,7 @@ const createCollege = async function (req, res) {
     try {
         let data = req.body;
         if (!('name' in data) || !('fullName' in data) || !("logoLink" in data))
-            return res.status(404).send({ status: false, msg: "name,fullName and logoLink can not be empty" })
+            return res.status(400).send({ status: false, msg: "name,fullName and logoLink can not be empty" })
         if (!isValid(data.name)) return res.status(400).send({ status: false, msg: "name is required" })
         if (!isValidCollegeName(data.name)) return res.status(400).send({ status: false, msg: "collegeName is not valid" });
         if (!isValid(data.fullName)) return res.status(400).send({ status: false, msg: "fullName is required" })

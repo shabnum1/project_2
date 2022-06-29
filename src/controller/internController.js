@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const collegeModel = require("../model/collegeModel");
 const internModel = require("../model/internModel");
-const { isValid, isValidName, isValidUrl, isValidEmail, isValidMobile } = require("../validator/validator");
+const { isValid, isValidName, isValidUrl, isValidEmail, isValidMobile,isValidCollegeName } = require("../validator/validator");
 
 const createIntern = async function (req, res) {
     try {
@@ -34,41 +34,34 @@ const createIntern = async function (req, res) {
 }
 
 //GET /functionup/collegeDetails via queryparams
-const getCollege = async function(req,res){
-    //try{
-        let query = req.query
-        // console.log(query)
-        let data = Object.keys(query)
-        if (!data.length) return res.status(411).send({ status: false, msg: "Data can not be empty" });
-    //    let colle=await collegeModel.find(query).select({_id:1})
-    //    console.log(colle)
-    //     //let auth = blog.find(e => e.authorId == authorisedId)
-    //    let myId=colle.find(x=>x._id)
-    //    //console.log(myId._id.toString())
-       
-        //let collegeIntern=await internModel.find({myId:myId._id.toString()})//.populate("collegeId")
-        let collegeDetail=await collegeModel.find(query)//.populate("collegeId")
-        console.log(collegeDetail)
-        let collegeid=collegeDetail.find(x=>x._id)
-        console.log(collegeid._id.toString())
-       let interDetail=await internModel.find({collegeId:collegeid}).populate("collegeId")//.sort({"collegeId":collegeid._id.toString()})
-        
-        // console.log(interDetail)
-       //console.log(collegeDetail)
-    //    let finalDetail=collegeDetail.interns
-    //    console.log(finalDetail)
-    //    finalDetail.push(interDetail)
-    
-       
-        return res.status(200).send({status:true,msg:interDetail})
+const getCollege = async function (req, res) {
+    try{
+    let collegeName = req.query.name
+    let query=req.query
+    let data = Object.keys(query)//object.keys only written keys in array
+    if (!data.length) return res.status(411).send({ status: false, msg: "Data can not be empty" });
+    if (!isValidCollegeName(query.name)) return res.status(400).send({ status: false, msg: "collegeName is not valid" });
+
+    let collegeDetail = await collegeModel.findOne({ name: collegeName })
+    console.log(collegeDetail)
+    let collegeid = collegeDetail._id
+    console.log(collegeid)
+    let interns = await internModel.find({ collegeId: collegeid, isDeleted: false }, { name: 1, email: 1, mobile: 1 })
+
+    console.log(interns)
+
+
+    return res.status(200).send({ data: { name: collegeDetail.name, fullName: collegeDetail.fullName, logoLink: collegeDetail.logoLink, interns: interns } })
 
 
 
-    // } catch(err){
-    //     return res.status(500).send({status:false, msg: err.message})
-    // }
+    } catch(err){
+        return res.status(500).send({status:false, msg: err.message})
+    }
 
 
 }
 
-module.exports = { createIntern ,getCollege}
+
+
+module.exports = { createIntern, getCollege }
