@@ -16,7 +16,8 @@ const isValid = (value) => {
 }
 
 const isValidUrl = (logoLink) => {
-    if (/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(logoLink))
+   // if (/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(logoLink))
+   if (/(https?:\/\/.*\.(?:png|jpg))/i.test(logoLink))
         return true
 }
 const isValidMobile = (mobile) => {

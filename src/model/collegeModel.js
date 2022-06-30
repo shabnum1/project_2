@@ -6,7 +6,8 @@ const collegeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        lowercase:true//Uppercase will convert itself into lowercase while creating college
     },
     fullName: {
         type: String,
@@ -16,16 +17,14 @@ const collegeSchema = new mongoose.Schema({
     logoLink: {
         type: String,
         required: true,
+        unique: true
     },
     isDeleted:
     {
         type: Boolean,
         default: false
     },
-    // interns:{
-    //     type:String,
-    //     default:true
-    // }
+   
     
 
 }, { timestamps: true });

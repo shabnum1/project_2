@@ -1,5 +1,5 @@
 const express = require('express');//framework and provide tools it will make our code easy
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');//wtever data is cmg to us it will parse into json form
 const mongoose = require('mongoose');
 const route = require('./route/route');
 const app = express();
