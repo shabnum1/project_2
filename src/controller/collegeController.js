@@ -5,8 +5,7 @@ const { isValidName, isValid, isValidUrl, isValidMobile, isValidEmail, isValidCo
 const createCollege = async function (req, res) {
     try {
         let data = req.body;
-        let logoI = req.body.logoLink
-        let nam = req.body.name
+       
         if (!('name' in data) || !('fullName' in data) || !("logoLink" in data))
             return res.status(400).send({ status: false, msg: "name,fullName and logoLink can not be empty" })
         if (!isValid(data.name)) return res.status(400).send({ status: false, msg: "name is required" })
@@ -16,12 +15,14 @@ const createCollege = async function (req, res) {
         if (!isValid(data.logoLink)) return res.status(400).send({ status: false, msg: "url can not be empty" });
 
         if (!isValidUrl(data.logoLink)) return res.status(400).send({ status: false, msg: "not a valid url" })
-        let logo = await collegeModel.findOne({ logoI })
-        console.log(logo)
-        if (logo) return res.status(400).send({ msg: "Duplicate Logo" })
-        
-        let collegeName = await collegeModel.findOne({ nam })
-        if (collegeName) return res.status(400).send({ msg: "This College is already exist" })
+        if (await collegeModel.findOne({ logoLink: data.logoLink }))
+            return res.status(400).send({ msg: "Duplicate Logo" })
+     
+
+        if (await collegeModel.findOne({ name:data.name }))
+            return res.status(400).send({ msg: "This College Short Name is already exist" })
+        if (await collegeModel.findOne({ fullName: data.fullName }))
+            return res.status(400).send({ msg: "This College Full is already exist" })
 
         let savedData = await collegeModel.create(data);
 

@@ -7,12 +7,14 @@ const collegeSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        unique:true,
         lowercase:true//Uppercase will convert itself into lowercase while creating college
     },
     fullName: {
         type: String,
         required: true,
         trim: true,
+        unique:true
     },
     logoLink: {
         type: String,
