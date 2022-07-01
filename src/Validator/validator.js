@@ -1,8 +1,8 @@
 //for internModel
-const isValidName = (name) => {
-    if (/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/.test(name))
-        return true
-};
+// const isValidName = (name) => {
+//     if (!(/^[A-Za-z_ ]+$/.test(name)))
+//         return true
+// };
 //for collegeName
 const isValidCollegeName = (name) => {
     if (/^[a-z]+$/.test(name))
@@ -29,5 +29,5 @@ const isValidEmail = (email) => {
         return true
 }
 module.exports = {
-    isValidName, isValid, isValidUrl, isValidMobile, isValidEmail,isValidCollegeName
+     isValid, isValidUrl, isValidMobile, isValidEmail,isValidCollegeName
 }
