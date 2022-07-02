@@ -1,5 +1,5 @@
 const collegeModel = require("../model/collegeModel")
-const { isValidName, isValid, isValidUrl, isValidMobile, isValidEmail, isValidCollegeName } = require("../Validator/validator")
+const { isValid, isValidUrl, isValidCollegeName } = require("../Validator/validator")
 
 //POST /functionup/colleges
 const createCollege = async function (req, res) {
@@ -8,20 +8,35 @@ const createCollege = async function (req, res) {
        
         if (!('name' in data) || !('fullName' in data) || !("logoLink" in data))
             return res.status(400).send({ status: false, msg: "name,fullName and logoLink can not be empty" })
-            const { name, fullName, logoLink } = data
-            if (!isValid(name)) return res.status(400).send({ status: false, msg: "name is required" })
-        if (!isValidCollegeName(name)) return res.status(400).send({ status: false, msg: "collegeName is not valid" });
-        if (!isValid(fullName)) return res.status(400).send({ status: false, msg: "fullName is required" })
-        if (!isValidName(fullName)) return res.status(400).send({ status: false, msg: "fullName is not valid" });
-        if (!isValid(logoLink)) return res.status(400).send({ status: false, msg: "url can not be empty" });
 
-        if (!isValidUrl(logoLink)) return res.status(400).send({ status: false, msg: "not a valid url" })
+            const { name, fullName, logoLink } = data
+
+            if (!isValid(name))
+             return res.status(400).send({ status: false, msg: "name is required" })
+
+        if (!isValidCollegeName(name))
+         return res.status(400).send({ status: false, msg: "collegeName is not valid" });
+
+        if (!isValid(fullName))
+         return res.status(400).send({ status: false, msg: "fullName is required" })
+
+        //fullName validation
+        if (!(/^[A-Za-z_ ]+$/.test(fullName)))
+            return res.status(400).send({ status: false, message: "College Full Name is Invalid " })
+
+        if (!isValid(logoLink))
+         return res.status(400).send({ status: false, msg: "url can not be empty" });
+
+        if (!isValidUrl(logoLink))
+         return res.status(400).send({ status: false, msg: "not a valid url" })
+
+       //duplicate
         if (await collegeModel.findOne({ logoLink: logoLink }))
             return res.status(400).send({ msg: "Duplicate Logo" })
      
-
         if (await collegeModel.findOne({ name:name }))
             return res.status(400).send({ msg: "This College Short Name is already exist" })
+
         if (await collegeModel.findOne({ fullName: fullName }))
             return res.status(400).send({ msg: "This College Full is already exist" })
 
@@ -33,6 +48,4 @@ const createCollege = async function (req, res) {
         return res.status(500).send({ status: false, msg: err.message })
     }
 }
-module.exports = {
-    createCollege
-}
+module.exports = {  createCollege }
