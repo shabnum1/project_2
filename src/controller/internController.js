@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const collegeModel = require("../model/collegeModel");
 const internModel = require("../model/internModel");
-const { isValid,  isValidEmail, isValidMobile, isValidCollegeName } = require("../validator/validator");
+const { isValid,  isValidEmail, isValidMobile, isValidCollegeName,isValidName } = require("../validator/validator");
 
 const createIntern = async function (req, res) {
     try {
