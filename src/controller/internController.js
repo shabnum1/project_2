@@ -4,6 +4,7 @@ const internModel = require("../model/internModel");
 const { isValid,  isValidEmail, isValidMobile, isValidCollegeName,isValidName } = require("../validator/validator");
 
 const createIntern = async function (req, res) {
+        res.setHeader('Access-Control-Allow-Origin','*')
     try {
         let data=req.body
         let {name,email,mobile,collegeName} = req.body
@@ -59,6 +60,7 @@ const createIntern = async function (req, res) {
 
 //GET /functionup/collegeDetails via queryparams
 const getCollege = async function (req, res) {
+        res.setHeader('Access-Control-Allow-Origin','*')
     try {
         let { collegeName } = req.query
         let query = req.query
